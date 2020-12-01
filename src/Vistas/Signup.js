@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Main from '../Componetes/Main';
 import imagenSignup from '../imagenes/signup.png';
 import Axios from 'axios';
-export default function Signup() {
+export default function Signup({signup}) {
 
     const [usuario, setUsuario] = useState({
         email: "",
@@ -15,8 +15,10 @@ export default function Signup() {
     async function handleSubmit(e){
         e.preventDefault();
         try {
-            const {data}  = await Axios.post('/api/usuarios/signup',usuario);
-            console.log(data);
+            console.log(usuario)
+            signup(usuario);
+            //const {data}  = await Axios.post('/api/usuarios/signup',usuario);
+            //console.log(data);
         }
         catch (error){
             console.log(error)

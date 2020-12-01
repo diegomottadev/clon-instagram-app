@@ -1,12 +1,13 @@
-const TOKEN_KEY = 'CLONTAGRAM_TOKEN';
 import Axios from 'axios';
+
+const TOKEN_KEY = 'CLONTAGRAM_TOKEN';
+
 export function setToken(token){
     localStorage.setItem(TOKEN_KEY,token);
 }
 
-export function getItem(){
+export function getToken(){
     return localStorage.getItem(TOKEN_KEY);
-    
 }
 
 export function deleteToken(){
