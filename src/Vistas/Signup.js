@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Main from '../Componetes/Main';
 import imagenSignup from '../imagenes/signup.png';
-import Axios from 'axios';
 export default function Signup({signup}) {
 
     const [usuario, setUsuario] = useState({

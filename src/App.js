@@ -1,38 +1,76 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import Nav from './Componetes/Nav';
 import Signup from './Vistas/Signup';
 import Login from './Vistas/Login';
 import Axios from 'axios';
-import {setToken,deleteToken} from './Helpers/auth-helpers';
+import { setToken, deleteToken, initAxiosInterceptors, getToken } from './Helpers/auth-helpers';
+import Loading from './Componentes/Loading';
+import Main from './Componetes/Main';
+
+initAxiosInterceptors() // lo usa en el useEffect para preguntar si ese token lo tiene el usuario
 
 export default function App() {
- const [usuario,setUsuario] = useState(null); // no sabemos si hay un usuario autenticado
+  const [usuario, setUsuario] = useState(null); // no sabemos si hay un usuario autenticado
+  const [cargandoUsuario, setCargandoUsuario] = useState(true);
 
- async function login(email,password){
-   const {data} = await Axios.post('/api/usuarios/login',{
-     email,
-     password
-   }); //data.usuario, data.token
-   setUsuario(data.usuario);
-   setToken(data.token)
- }
+  useEffect(() => {
+    async function cargandoUsuario() {
 
- async function signup(usuario){
-  const {data} = await Axios.post('/api/usuarios/signup', usuario); //data.usuario, data.token
-  setUsuario(data.usuario);
-  setToken(data.token)
-}
 
-function logout(){
-  setUsuario(null);
-  deleteToken();
-}
+      if (!getToken()) {
+        setCargandoUsuario(false);
+        return;
+      }
+      try {
+        const { data: usuario } = await Axios.get('/api/usuarios/whoami');
+        setUsuario(usuario);
+        setCargandoUsuario(false)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    cargandoUsuario();
+  }, [])
+
+
+  async function login(email, password) {
+    const { data } = await Axios.post('/api/usuarios/login', {
+      email,
+      password
+    }); //data.usuario, data.token
+    setUsuario(data.usuario);
+    setToken(data.token)
+  }
+
+  async function signup(usuario) {
+    const { data } = await Axios.post('/api/usuarios/signup', usuario); //data.usuario, data.token
+    setUsuario(data.usuario);
+    setToken(data.token)
+  }
+
+  function logout() {
+    setUsuario(null);
+    deleteToken();
+  }
+
+  if(cargandoUsuario){
+    return(
+      <div>
+        <Main>
+          <Loading/>
+        </Main>
+      </div>
+    );
+
+  }
+
   return (
     <div className="ContenedorTemporal">
-      <Nav/>
-      <Signup signup={signup}/>  
-      {/* <Login login={login}/> */}
-  <div> {JSON.stringify(usuario)}</div>
+      <Nav />
+      {/* <Signup signup={signup} /> */}
+      <Login login={login}/>
+      <div> {JSON.stringify(usuario)}</div>
     </div>
   );
 }
