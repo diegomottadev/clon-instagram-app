@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Main from '../Componetes/Main';
 import Axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default function Login({login}){
 
@@ -34,7 +35,7 @@ export default function Login({login}){
                 <input type="email" name="email" placeholder="Email" className="Form__field" required onChange={handleInputChange} value={usuario.email}/>
                 <input type="password" name="password" placeholder="Contraseña" className="Form__field" required max="150" onChange={handleInputChange} value={usuario.password}/>
                 <button className="Form__submit" type="submit">Login</button>
-                <p className="FormContainer__info">No tienes cuenta? <a href="/signup">Sign up</a></p>
+                <p className="FormContainer__info">No tienes cuenta? <Link to="Sign up">Sing up</Link></p>
                 </form>
             </div>
         </div>

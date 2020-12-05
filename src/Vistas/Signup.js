@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Main from '../Componetes/Main';
 import imagenSignup from '../imagenes/signup.png';
 export default function Signup({signup}) {
@@ -48,7 +49,7 @@ export default function Signup({signup}) {
                     <input type="password" name="password" placeholder="Contraseña" className="Form__field" required max="150" onChange={handleInputChange} value={usuario.password}/>
                     <button className="Form__submit" type="submit">Sign Up</button>
                     <p className="FormContainer_info">
-                        Ya tienes cuenta? <a href="/logn\">Login</a>
+                        Ya tienes cuenta? <Link to="/login">Login</Link>
                     </p>
                 </form>
             </div>

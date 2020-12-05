@@ -6,7 +6,7 @@ import Axios from 'axios';
 import { setToken, deleteToken, initAxiosInterceptors, getToken } from './Helpers/auth-helpers';
 import Loading from './Componetes/Loading';
 import Main from './Componetes/Main';
-import {BrowserRoute as Router, Route, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 initAxiosInterceptors() // lo usa en el useEffect para preguntar si ese token lo tiene el usuario
 
@@ -67,30 +67,34 @@ export default function App() {
   }
 
   return (
-    <div className="ContenedorTemporal">
-      <Nav />
-      {/* <Signup signup={signup} /> */}
-      <Login login={login}/>
+    <Router>
+      <Nav/>
+      <LogoutRoute login={login} signup={signup}/>
       <div> {JSON.stringify(usuario)}</div>
-    </div>
+    </Router>
+
+      
   );
 
-  function LoginRoute(){
+  
+}
 
-  }
 
-  function LogoutRoute({login,signup}){
-    return(
-      <Switch>
-        <Route
-          path="/login/"
-          render={props =><Login {...props} login={login}/>}
-        />
-        <Route
-          render={props =><Signup {...props} signup={signup}/>}
-          default
-        /> {/*ruta por default*/}
-      </Switch>
-    );
-  }
+function LoginRoute(){
+
+}
+
+function LogoutRoute({login,signup}){
+  return(
+    <Switch>
+      <Route
+        path="/login/"
+        render={props =><Login {...props} login={login}/>}
+      />
+      <Route
+        render={props =><Signup {...props} signup={signup}/>}
+        default
+      /> {/*ruta por default*/}
+    </Switch>
+  );
 }
