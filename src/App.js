@@ -69,11 +69,12 @@ export default function App() {
   return (
     <Router>
       <Nav/>
-      <LogoutRoute login={login} signup={signup}/>
+      {usuario ? 
+        (<LoginRoute/>): 
+        (<LogoutRoute login={login} signup={signup}/>)
+      }
       <div> {JSON.stringify(usuario)}</div>
-    </Router>
-
-      
+    </Router>  
   );
 
   
@@ -81,7 +82,12 @@ export default function App() {
 
 
 function LoginRoute(){
-
+  return (
+    <Switch>
+      <Route path="/" component={()=> <Main><h1>Soy el feed</h1></Main>}>
+      </Route>
+    </Switch>
+  );
 }
 
 function LogoutRoute({login,signup}){
