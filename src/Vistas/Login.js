@@ -3,7 +3,7 @@ import Main from '../Componetes/Main';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
 
-export default function Login({login}){
+export default function Login({login,mostrarError}){
 
     const [usuario, setUsuario] = useState({
         email: "",
@@ -17,12 +17,12 @@ export default function Login({login}){
     async function handleSubmit(e){
         e.preventDefault();
         try {
-            login(usuario.email,usuario .password);
-            const {data}  = await Axios.post('/api/usuarios/login',usuario);
-            console.log(data);
+            await login(usuario.email,usuario .password);
+            //const {data}  = await Axios.post('/api/usuarios/login',usuario);
+            //console.log(data);
         }
         catch (error){
-            console.log(error)
+            mostrarError(error.response.data);
         }
     }
     return ( 
@@ -32,8 +32,8 @@ export default function Login({login}){
             <h1 className="Form__titulo"></h1>
             <div>
                 <form onSubmit={handleSubmit}>
-                <input type="email" name="email" placeholder="Email" className="Form__field" required onChange={handleInputChange} value={usuario.email}/>
-                <input type="password" name="password" placeholder="Contraseña" className="Form__field" required max="150" onChange={handleInputChange} value={usuario.password}/>
+                <input type="email" name="email" placeholder="Email" className="Form__field"  onChange={handleInputChange} value={usuario.email}/>
+                <input type="password" name="password" placeholder="Contraseña" className="Form__field"  max="150" onChange={handleInputChange} value={usuario.password}/>
                 <button className="Form__submit" type="submit">Login</button>
                 <p className="FormContainer__info">No tienes cuenta? <Link to="Sign up">Sing up</Link></p>
                 </form>

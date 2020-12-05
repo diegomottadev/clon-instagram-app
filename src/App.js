@@ -6,6 +6,7 @@ import Axios from 'axios';
 import { setToken, deleteToken, initAxiosInterceptors, getToken } from './Helpers/auth-helpers';
 import Loading from './Componetes/Loading';
 import Main from './Componetes/Main';
+import Error from './Componetes/Error';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 initAxiosInterceptors() // lo usa en el useEffect para preguntar si ese token lo tiene el usuario
@@ -13,6 +14,7 @@ initAxiosInterceptors() // lo usa en el useEffect para preguntar si ese token lo
 export default function App() {
   const [usuario, setUsuario] = useState(null); // no sabemos si hay un usuario autenticado
   const [cargandoUsuario, setCargandoUsuario] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function cargandoUsuario() {
@@ -55,6 +57,15 @@ export default function App() {
     deleteToken();
   }
 
+  function mostrarError(mensaje){
+    //alert();
+    setError(mensaje.message);
+  }
+
+  function escoderError(){
+    setError(null);
+  }
+
   if(cargandoUsuario){
     return(
       <div>
@@ -64,14 +75,15 @@ export default function App() {
       </div>
     );
 
-  }
+  } 
 
   return (
     <Router>
       <Nav/>
+      <Error mensaje={error} escoderError={escoderError}/>
       {usuario ? 
         (<LoginRoute/>): 
-        (<LogoutRoute login={login} signup={signup}/>)
+        (<LogoutRoute login={login} signup={signup} mostrarError={mostrarError}/>)
       }
       <div> {JSON.stringify(usuario)}</div>
     </Router>  
@@ -90,15 +102,15 @@ function LoginRoute(){
   );
 }
 
-function LogoutRoute({login,signup}){
+function LogoutRoute({login,signup,mostrarError}){
   return(
     <Switch>
       <Route
         path="/login/"
-        render={props =><Login {...props} login={login}/>}
+        render={props =><Login {...props} login={login} mostrarError={mostrarError}/>}
       />
       <Route
-        render={props =><Signup {...props} signup={signup}/>}
+        render={props =><Signup {...props} signup={signup} mostrarError={mostrarError}/>}
         default
       /> {/*ruta por default*/}
     </Switch>

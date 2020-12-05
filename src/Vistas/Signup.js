@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Main from '../Componetes/Main';
 import imagenSignup from '../imagenes/signup.png';
-export default function Signup({signup}) {
+export default function Signup({signup,mostrarError}) {
 
     const [usuario, setUsuario] = useState({
         email: "",
@@ -16,11 +16,12 @@ export default function Signup({signup}) {
         e.preventDefault();
         try {
             console.log(usuario)
-            signup(usuario);
+            await signup(usuario);
             //const {data}  = await Axios.post('/api/usuarios/signup',usuario);
             //console.log(data);
         }
         catch (error){
+            mostrarError(error.response.data);
             console.log(error)
         }
     }
