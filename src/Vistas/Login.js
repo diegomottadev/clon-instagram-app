@@ -32,8 +32,8 @@ export default function Login({login,mostrarError}){
             <h1 className="Form__titulo"></h1>
             <div>
                 <form onSubmit={handleSubmit}>
-                <input type="email" name="email" placeholder="Email" className="Form__field"  onChange={handleInputChange} value={usuario.email}/>
-                <input type="password" name="password" placeholder="Contraseña" className="Form__field"  max="150" onChange={handleInputChange} value={usuario.password}/>
+                <input type="email" name="email" placeholder="Email" className="Form__field"  onChange={handleInputChange} value={usuario.email} required/>
+                <input type="password" name="password" placeholder="Contraseña" className="Form__field"  max="150" onChange={handleInputChange} value={usuario.password} required/>
                 <button className="Form__submit" type="submit">Login</button>
                 <p className="FormContainer__info">No tienes cuenta? <Link to="Sign up">Sing up</Link></p>
                 </form>
