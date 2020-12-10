@@ -59,7 +59,7 @@ export default function App() {
 
   function mostrarError(mensaje){
     //alert();
-    setError(mensaje.message);
+    setError(mensaje);
   }
 
   function escoderError(){

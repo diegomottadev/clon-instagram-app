@@ -18,11 +18,11 @@ export default function Login({login,mostrarError}){
         e.preventDefault();
         try {
             await login(usuario.email,usuario .password);
-            //const {data}  = await Axios.post('/api/usuarios/login',usuario);
-            //console.log(data);
         }
         catch (error){
             mostrarError(error.response.data);
+            console.log(error)
+
         }
     }
     return ( 
