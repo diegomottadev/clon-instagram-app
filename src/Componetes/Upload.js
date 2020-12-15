@@ -5,9 +5,11 @@ import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
 import Loading from './Loading';
 
-export default function Upload({ mostrarError }) {
+export default function Upload({ history, mostrarError }) {
   const [imagenUrl, setImagenUrl] = useState('');
   const [subiendoImagen, setSubiendoImagen] = useState(false);
+  const [enviandoPost, setEnviandoPost] = useState(false);
+  const [caption, setCaption] = useState('');
 
   async function handleImagenSeleccionada(evento) {
     try {
@@ -30,10 +32,39 @@ export default function Upload({ mostrarError }) {
     }
   }
 
+   async function handleSubmit(evento){
+     evento.preventDefault();
+
+    if(enviandoPost){
+      return;
+    }
+
+    if(subiendoImagen){
+      mostrarError("No se ha terminado de subir la imagen...")
+    }
+
+    if(!imagenUrl){
+      mostrarError("Primero selecciona una imagen")
+
+    }
+
+     try {
+       setEnviandoPost(true);
+       const body = {
+         caption,
+         url: imagenUrl
+       };
+       await Axios.post('/api/posts', body);
+       setEnviandoPost(false);
+       history.push("/")
+     } catch (error) {
+       mostrarError(error.response.data);
+     } 
+   }
   return (
     <Main center>
       <div className="Upload">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="Upload__image-section">
             <SeccionSubirImagen
               imagenUrl={imagenUrl}
@@ -47,6 +78,8 @@ export default function Upload({ mostrarError }) {
             required
             maxLength="180"
             placeholder="Caption de tu post."
+            value={caption}
+            onChange={e => setCaption(e.target.value)}
           />
           <button className="Upload__submit" type="submit">
             Post

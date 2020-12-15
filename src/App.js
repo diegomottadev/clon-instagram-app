@@ -9,7 +9,7 @@ import Main from './Componetes/Main';
 import Error from './Componetes/Error';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Upload from './Componetes/Upload';
-
+import Feed from "./Vistas/Feed";
 initAxiosInterceptors() // lo usa en el useEffect para preguntar si ese token lo tiene el usuario
 
 export default function App() {
@@ -99,7 +99,7 @@ function LoginRoute({mostrarError}){
     <Switch>
       <Route path="/upload"  render={props => <Upload {...props} mostrarError={mostrarError}/>}>
       </Route>
-      <Route path="/"  component={()=> <Main><h1>Soy el feed</h1></Main>} default>
+      <Route path="/"  render={props => <Feed {...props} mostrarError={mostrarError}/>}>
       </Route>
     </Switch>
   );
