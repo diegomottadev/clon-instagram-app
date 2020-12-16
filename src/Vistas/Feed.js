@@ -1,7 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useState} from 'react';
 import Axios from 'axios';
 import Main from '../Componetes/Main';
 import Loading from '../Componetes/Loading';
+import { Link } from 'react-router-dom';
+import Post from '../Componetes/Post'
 
 async function cargarPosts(fechaUltimoPost){
     const query = fechaUltimoPost ? `?fecha=${fechaUltimoPost}`: "";
@@ -26,7 +28,41 @@ export default function Feed({mostrarError}){
                     console.log(error);
             }
         }
-        cargarPosts();
+        cargarPostIniciales();
     }, []);
-    return (<Main center><h1>Soy el feed</h1></Main>);
+
+    if(cargandoPostsIniciales){
+        return(
+            <Main center>
+                <Loading/>
+            </Main>
+        );
+    }
+
+    if(!cargandoPostsIniciales && posts.length === 0){
+        return (<Main center><NoSiguesANadie/></Main>);
+    }
+
+    return (<Main center>
+        <div className="Feed">
+            {posts.map(post =>(
+                <Post key={post._id} post={post}/>
+            ))}
+        </div>
+        </Main>);
+}
+
+function NoSiguesANadie(){
+    return (
+        <div className="NoSiguesANadie">
+            <p className="NoSiguesANadie__mensaje">
+                Tu feed no tiene fotos o porque no han publicado fotos
+            </p>
+            <div className="text-center">
+                <Link to="/explore" className="NoSiguesANadie_boton">
+                    Explora clontagram      
+                </Link>
+            </div>
+        </div>
+    );
 }
