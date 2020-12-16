@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 import Comentar from './Comentar';
 import {toggleLike} from '../Helpers/post-helpers';
 
-export default function Post({post,actualizarPost}){
+export default function Post({post,actualizarPost,mostrarError}){
     const {
         numLikes,
         numComentarios,
@@ -28,10 +28,13 @@ export default function Post({post,actualizarPost}){
     
         try {
             setEnviandoLike(true);
-            await toggleLike(post);
+            const postActualizado = await  toggleLike(post);
+            actualizarPost(post,postActualizado)
             setEnviandoLike(false);
         } catch (error) {
-            
+            setEnviandoLike(false);
+            mostrarError('Hubo un problema modificando el like. Intenta de nuevo.');
+            console.log(error);
         }
     }
 
@@ -41,7 +44,7 @@ export default function Post({post,actualizarPost}){
             <img src={url} alt={caption} className="Post-Componente__img"/>
             <div className="Post-Componente__acciones">
                 <div className="Post-Componente__like-container">
-                    <BotonLike onSubmitLike={onSubmitLike   } like={estaLike} />
+                    <BotonLike onSubmitLike={onSubmitLike} like={estaLike} />
                 </div>
                 <p>Liked por {numLikes} personas</p>
                 <ul>
