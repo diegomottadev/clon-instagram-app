@@ -30,4 +30,11 @@ export async function comentar(post, mensaje,usuario){
         {mensaje}
         );
     nuevoComentario.usuario  =  usuario
+
+    const postConComentariosActualizados = {
+        ...post,
+        comentarios : [...post.comentarios, nuevoComentario],
+        nuevoComentario: post.nuevoComentario + 1
+    }
+    return postConComentariosActualizados;
 }

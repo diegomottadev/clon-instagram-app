@@ -49,6 +49,8 @@ export default function Upload({ history, mostrarError }) {
     }
 
      try {
+       //para que espere en subir al servidor 
+       //entonces va este estado
        setEnviandoPost(true);
        const body = {
          caption,
