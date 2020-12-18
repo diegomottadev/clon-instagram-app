@@ -83,7 +83,7 @@ export default function App() {
       <Nav usuario={usuario}/>
       <Error mensaje={error} escoderError={escoderError}/>
       {usuario ? 
-        (<LoginRoute/>): 
+        (<LoginRoute mostrarError={mostrarError} usuario={usuario}/>): 
         (<LogoutRoute login={login} signup={signup} mostrarError={mostrarError}/>)
       }
       <div> {JSON.stringify(usuario)}</div>
@@ -94,12 +94,12 @@ export default function App() {
 }
 
 
-function LoginRoute({mostrarError}){
+function LoginRoute({mostrarError,usuario}){
   return (
     <Switch>
       <Route path="/upload"  render={props => <Upload {...props} mostrarError={mostrarError}/>}>
       </Route>
-      <Route path="/"  render={props => <Feed {...props} mostrarError={mostrarError}/>}>
+      <Route path="/"  render={props => <Feed {...props} mostrarError={mostrarError} usuario={usuario}/>}>
       </Route>
     </Switch>
   );

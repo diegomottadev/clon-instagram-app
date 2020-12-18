@@ -3,7 +3,7 @@ import Avatar from './Avatar';
 import BotonLike from './BotonLike';
 import {Link} from 'react-router-dom';
 import Comentar from './Comentar';
-import {toggleLike} from '../Helpers/post-helpers';
+import {toggleLike, comentar} from '../Helpers/post-helpers';
 
 export default function Post({post,actualizarPost,mostrarError}){
     const {
@@ -38,6 +38,10 @@ export default function Post({post,actualizarPost,mostrarError}){
         }
     }
 
+    async function onSubmitComentario(mensaje){
+        await comentar(post, mensaje);
+    }
+
     return (
         <div className="Post-Componente">
             <Avatar usuario={usuario}/>
@@ -58,7 +62,7 @@ export default function Post({post,actualizarPost,mostrarError}){
                     <Comentarios comentarios={comentarios}/>
                 </ul>
             </div>
-            <Comentar/>
+            <Comentar onSubmitComentario={onSubmitComentario} mostrarError={mostrarError}/>
 
         </div>
     )
