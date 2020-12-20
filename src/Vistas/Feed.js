@@ -23,12 +23,10 @@ export default function Feed({mostrarError,usuario}){
             try {
                 const nuevosPosts = await cargarPosts();
                 setPosts(nuevosPosts);
-                console.log(nuevosPosts);
                 setCargandoPostsIniciales(false);
                 revisarSiHayMasPosts(nuevosPosts);
             } catch (error) {
                     mostrarError('Hubo un error al cargar tu feed..');
-                    console.log(error);
             }
         }
         cargarPostIniciales();

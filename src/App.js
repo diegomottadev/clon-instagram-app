@@ -11,6 +11,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Upload from './Componetes/Upload';
 import Feed from "./Vistas/Feed";
 import PostVista from './Vistas/Post';
+import Explore from './Vistas/Explore';
 initAxiosInterceptors() // lo usa en el useEffect para preguntar si ese token lo tiene el usuario
 
 export default function App() {
@@ -100,8 +101,11 @@ function LoginRoute({mostrarError,usuario}){
     <Switch>
       <Route path="/upload"  render={props => <Upload {...props} mostrarError={mostrarError}/>}>
       </Route>
-      <Route path="/post/:id"  render={props => <PostVista {...props} mostrarError={mostrarError}/>}>
+      <Route path="/post/:id"  render={props => <PostVista {...props} mostrarError={mostrarError} usuario={usuario}/>}>
       </Route>
+      <Route path="/explore"  render={props => <Explore {...props} mostrarError={mostrarError}/>}>
+      </Route>
+
       <Route path="/"  render={props => <Feed {...props} mostrarError={mostrarError} usuario={usuario}/>}>
       </Route>
     </Switch>

@@ -7,12 +7,16 @@ import BotonLike from '../Componetes/BotonLike';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
 import RecursoNoExiste from '../Componetes/RecursoNoExiste';
+import {toggleLike, comentar} from '../Helpers/post-helpers';
+
 //match : prop de route router para acceder al id por parametros
-export default function PostVista({ mostrarError, match }) {
+export default function PostVista({ mostrarError, match,usuario }) {
     const postId = match.params.id;
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
     const [postNoExiste, setPostNoExiste] = useState(false);
+    const [enviandoLike, setEnviandoLike] = useState(false);
+
     // cuando ingresa a esta vista el lloading se carga primero y 
     // mientras el servidor buscar el post
     useEffect(() => {
@@ -34,6 +38,30 @@ export default function PostVista({ mostrarError, match }) {
         cargarPost();
     }, [postId]); //en caso que la postId cambie el useEffect se de cuenta y cambie el post
 
+
+    async function onSubmitLike(){
+
+        if(enviandoLike){
+            return;
+        }
+    
+        try {
+            setEnviandoLike(true);
+            const postActualizado = await  toggleLike(post);
+            setPost(postActualizado)
+            setEnviandoLike(false);
+        } catch (error) {
+            setEnviandoLike(false);
+            mostrarError('Hubo un problema modificando el like. Intenta de nuevo.');
+            console.log(error);
+        }
+    }
+
+    async function onSubmitComentario(mensaje){
+        const postActualizado = await comentar(post, mensaje,usuario);
+        setPost(postActualizado);
+    }
+
     if (loading) {
         return (
             <Main center>
@@ -52,7 +80,9 @@ export default function PostVista({ mostrarError, match }) {
 
     return (
         <Main center>
-            <Post  {...post} />
+            <Post  {...post} 
+                onSubmitComentario={onSubmitComentario}
+                onSubmitLike={onSubmitLike}/>
         </Main>
     );
 
