@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import Loading from '../Componetes/Loading';
 import {ImagenAvatar} from '../Componetes/Avatar';
 import Axios from 'axios';
+import Grid from '../Componetes/Grid';
 
 export default function Explore({mostrarError}){
 
@@ -12,7 +13,7 @@ export default function Explore({mostrarError}){
     const [loading, setLoading] = useState(true);
     
     useEffect(()=>{
-        async   function cargarPostsYusuarios( ){
+        async  function cargarPostsYusuarios( ){
             try {
                 const [posts,users] = await Promise.all([
                     Axios.get('/api/posts/explore').then(({data}) =>data),
@@ -25,11 +26,8 @@ export default function Explore({mostrarError}){
                 mostrarError('Hubo un problema con el explore, Vuelva a refrescar la página');
             }
         }
-
         cargarPostsYusuarios();
     },[]);
-
-
 
     if(loading){
         return (
@@ -59,6 +57,14 @@ export default function Explore({mostrarError}){
                     }
                 </div>
             </div>
+
+            <div className="Explore__section">
+                <h2 className="Explore__title">
+                        Explorar
+                </h2>
+                <Grid posts={posts}/>
+            </div>
+
         </Main>
     );
 }
