@@ -6,7 +6,7 @@ export default function Avatar({usuario}){
     return (
         <div className="Avatar">
             <ImagenAvatar  usuario={usuario}/>
-            <Link to={`/perfil/${usuario.name}`}>
+            <Link to={`/perfil/${usuario.username}`}>
                 <h2>{usuario.username}</h2>
             </Link>
         </div>

@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-export  async function toggleSiguiendo(usuario) {
+export default  async function toggleSiguiendo(usuario) {
   let usuarioActualizado;
 
   if (usuario.siguiendo) {
