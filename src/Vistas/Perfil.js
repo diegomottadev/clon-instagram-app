@@ -4,6 +4,7 @@ import RecursoNoExiste from '../Componetes/RecursoNoExiste';
 import Axios from 'axios';
 import stringToColor from 'string-to-color';
 import Loading from '../Componetes/Loading';
+import {toggleSiguiendo} from '../Helpers/amistad-helpers';
 
 export default function Perfil({ mostrarError, usuario, match,logout }) {
     
@@ -13,16 +14,19 @@ export default function Perfil({ mostrarError, usuario, match,logout }) {
   const [cargandoPerfil, setCargandoPefil] = useState(true);
   const [perfilNoExiste, setPerfilNoExiste] = useState(false);
   const [subiendoImagen, setSubiendoImagen] = useState(false);
+  const [enviandoAmistad, setEnviandoAmistad] = useState(false);
 
+
+  
   useEffect(() => {
     async function cargarPostsYUsuario() {
       try {
         setCargandoPefil(true);
-        const { data: usuario } = await Axios.get(`/api/usuarios/${username}`);
+        const { data: usuarioBuscado } = await Axios.get(`/api/usuarios/${username}`);
         const { data: posts } = await Axios.get(
-          `/api/posts/usuario/${usuario._id}`
+          `/api/posts/usuario/${usuarioBuscado._id}`
         );
-        setUsuarioDueñoDelPerfil(usuario);
+        setUsuarioDueñoDelPerfil(usuarioBuscado);
         setPosts(posts);
         setCargandoPefil(false);
       } catch (error) {
@@ -62,6 +66,22 @@ export default function Perfil({ mostrarError, usuario, match,logout }) {
       }
   }
 
+  async function onToggleSiguiendo(){
+      if (enviandoAmistad){
+          return;
+      }
+
+      try {
+         setEnviandoAmistad(true);
+         const usuarioActualizado = await toggleSiguiendo(usuarioDueñoDelPerfil);
+         setUsuarioDueñoDelPerfil(usuarioActualizado);
+         setEnviandoAmistad(false);
+      } catch (error) {
+          mostrarError("Hubo un problema siguiendo/dejando de seguir a este usuario. Intenta de nuevo");
+          setEnviandoAmistad(false);
+      }
+  }
+
   if (cargandoPerfil) {
     return (
       <Main center>
@@ -94,7 +114,7 @@ export default function Perfil({ mostrarError, usuario, match,logout }) {
                 <h2 className="capitalize">{usuarioDueñoDelPerfil.username}</h2>
                 {!esElPerfilDeLaPersonaLogin() && ( 
                     <BotonSeguir siguiendo={usuarioDueñoDelPerfil.siguiendo}
-                    toggleSiguiendo={()=>1}/>
+                    toggleSiguiendo={onToggleSiguiendo}/>
                 )
                 }
                 {esElPerfilDeLaPersonaLogin() && <BotonLogout logout={logout}/>}
