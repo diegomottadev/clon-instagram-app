@@ -1,4 +1,4 @@
-#Goal of the project
+# Goal of the project
 
 The objective of this React project was to incorporate the best practices of the framework, as well as to gain an understanding of using Hooks and connecting a Node.js API to create and retrieve information for display in this React frontend.
 
