@@ -6,9 +6,12 @@ The objective of this React project was to incorporate the best practices of the
 
 Process of setting up the development environment.
 
-Install dependencies: npm install
-Start the frontend server: npm start
-Visit http://localhost:3001
+Install dependencies:
+  npm install
+Start the frontend server: 
+  npm start
+Visit 
+  http://localhost:3001
 
 # Annotations
 
